@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web3 App</title>
+</head>
+<body>
+<p id="have_metamask">Have metamask?</p>
+<p id="contract_owner">???</p>
+
+<button onclick="connect()">Connect to Metamask</button>
+
+<button onclick="giveMe()">Give me the money</button>
+
+<script type="module">
+    import { ethers } from "https://cdn-cors.ethers.io/lib/ethers-5.5.4.esm.min.js";
+
+    let provider;
+    let contract;
+
+    if (typeof window.ethereum !== "undefined") {
+        document.getElementById("have_metamask").innerText = "Have Metamask!";
+
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+
+        // contract
+        const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+        const abi = [
+            {
+                inputs: [
+                    {
+                        internalType: "uint256",
+                        name: "amount",
+                        type: "uint256",
+                    },
+                ],
+                name: "giveMeTheMoney",
+                outputs: [],
+                stateMutability: "nonpayable",
+                type: "function",
+            },
+            {
+                inputs: [],
+                name: "owner",
+                outputs: [
+                    {
+                        internalType: "address",
+                        name: "",
+                        type: "address",
+                    },
+                ],
+                stateMutability: "view",
+                type: "function",
+            },
+        ];
+        const signer = provider.getSigner();
+
+        contract = new ethers.Contract(contractAddress, abi, signer);
+    }
+
+    window.connect = function () {
+        provider.send("eth_requestAccounts", []);
+    };
+
+    window.giveMe = async function () {
+        await contract.giveMeTheMoney(5000);
+    };
+</script>
+</body>
+</html>

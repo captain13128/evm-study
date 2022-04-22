@@ -32,7 +32,7 @@ describe("Token contract", function () {
       expect(await hardhatToken.symbol()).to.equal("CAP");
     });
     it("Should set token decimals", async function () {
-      expect(await hardhatToken.decimals()).to.equal(1);
+      expect(await hardhatToken.decimals()).to.equal(0);
     });
   });
 

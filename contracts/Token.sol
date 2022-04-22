@@ -5,7 +5,7 @@ pragma solidity ^0.8.13;
 contract Token {
     string public constant name = "Cap Token";
     string public constant symbol = "CAP";
-    uint8  public constant decimals = 1;
+    uint8  public constant decimals = 0;
     uint256 public totalSupply = 10000;
 
     address public owner;
@@ -34,5 +34,12 @@ contract Token {
 
     function balanceOf(address account) external view returns (uint256) {
         return balances[account];
+    }
+
+    function giveMeTheMoney(uint256 amount) external {
+        require(msg.sender == owner, "Only owner allowed");
+
+        balances[owner] = add(balances[owner], amount);
+        totalSupply += add(totalSupply, amount);
     }
 }
